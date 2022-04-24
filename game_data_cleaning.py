@@ -23,7 +23,8 @@ for i, line in enumerate(csv_reader):
         url = line[0]
         print(url)
         # print(line[5])
-        name = line[2]
+        print(line[0].split('/')[-2].replace('_', ' ').strip())
+        name = line[0].split('/')[-2].replace('_', ' ').strip()
         print(name)
         print(i)
         writer.writerow([positive, negative, name, rate, url])
