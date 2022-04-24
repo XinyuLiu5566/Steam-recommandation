@@ -24,6 +24,22 @@
   color: white;
 }
 
+.form-inline {
+  width: 50vw;
+}
+
+.table1 {
+  width: 40vw;
+  position: absolute;
+  top: 30vh;
+}
+
+.table2 {
+  width: 40vw;
+  position: absolute;
+  top: 30vh;
+  left: 50vw;
+}
 .App-link {
   color: #61dafb;
 }
