@@ -57,20 +57,20 @@ def get_recommendation(user_profile, content_data, tfidf, list_app_name):
 
     recommendations = {}
     for game in user_profile:
-    name = game[0]
-    id = content_data.index[content_data['Game_name'] == name][0]
-    similarities = linear_kernel(tfidf[id],tfidf).flatten()
-    related_docs_indices = (-similarities).argsort()[1:11]
-    lam = 0
-    for i in related_docs_indices:
-        new_game = list_app_name[i]
-        if new_game not in names:
-            if new_game not in recommendations:
-                recommendations.update({new_game: game[1]-lam})
-            else:
-                value = recommendations.get(new_game)
-                recommendations.update({new_game: value+game[1]-lam})
-        lam += 0.01
+        name = game[0]
+        id = content_data.index[content_data['Game_name'] == name][0]
+        similarities = linear_kernel(tfidf[id],tfidf).flatten()
+        related_docs_indices = (-similarities).argsort()[1:11]
+        lam = 0
+        for i in related_docs_indices:
+            new_game = list_app_name[i]
+            if new_game not in names:
+                if new_game not in recommendations:
+                    recommendations.update({new_game: game[1]-lam})
+                else:
+                    value = recommendations.get(new_game)
+                    recommendations.update({new_game: value+game[1]-lam})
+            lam += 0.01
 
     recommendations = dict(sorted(recommendations.items(), key=lambda item: item[1], reverse=True))
 
