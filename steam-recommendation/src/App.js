@@ -10,6 +10,8 @@ function App() {
   const [playTimes, setPlayTimes] = useState([])
   const [name, setName] = useState('')
   const [time, setTime] = useState('')
+  const [recommended, setRecommended] = useState([])
+  const [visible, setVisible] = useState(false)
 
   const handleGame = (e) => {
     const {value} = e.target
@@ -28,6 +30,28 @@ function App() {
     setName('')
     setTime('')
   }
+  const data = {
+    games: games,
+    playTimes: playTimes
+  }
+
+  const getRecommendedGames = (e) => {
+    e.preventDefault()
+    alert('The table will show after the execution')
+    fetch('http://127.0.0.1:5000/get_game', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(res => 
+      setRecommended(res.recommend),
+      setVisible(true),
+    )
+}
+
 
   return (
     <div>
@@ -72,8 +96,9 @@ function App() {
       </Table>
     </div>
     <div className='table2'>
+    {visible?
+    <div>
       <h4>Recommended games</h4>
-
       <Table  striped bordered hover>
         <thead>
           <tr>
@@ -83,17 +108,23 @@ function App() {
         </thead>
         <tbody>
         {
-          games.map((item, index) => {
+          recommended.map((item, index) => {
             return (
               <tr key={item}>
                 <td>{index+1}</td>
-                <td>{games[index]}</td>
+                <td>{recommended[index]}</td>
               </tr>
             )
           })
         }
       </tbody>
     </Table>
+    </div>
+    : 
+    <Button variant="primary" onClick={getRecommendedGames}>
+    Get Recommended Games
+    </Button>}
+      
     </div>
   </div>
   );
