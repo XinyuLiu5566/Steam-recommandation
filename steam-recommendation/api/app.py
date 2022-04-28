@@ -43,17 +43,17 @@ tfidf, list_app_name = tf_idf(content_data)
 def get_recommendation(user_profile, content_data, tfidf, list_app_name):
     names = []
     for i in range(len(user_profile)):
-    names.append(user_profile[i][0])
-    if user_profile[i][1] <= 2:
-        user_profile[i][1] = 0.1
-    elif user_profile[i][1] > 2 and user_profile[i][1] <= 10:
-        user_profile[i][1] = 0.5
-    elif user_profile[i][1] > 10 and user_profile[i][1] <= 50:
-        user_profile[i][1] = 0.8
-    elif user_profile[i][1] > 50 and user_profile[i][1] <= 100: 
-        user_profile[i][1] = 1
-    else:
-        user_profile[i][1] = 1.2
+        names.append(user_profile[i][0])
+        if user_profile[i][1] <= 2:
+            user_profile[i][1] = 0.1
+        elif user_profile[i][1] > 2 and user_profile[i][1] <= 10:
+            user_profile[i][1] = 0.5
+        elif user_profile[i][1] > 10 and user_profile[i][1] <= 50:
+            user_profile[i][1] = 0.8
+        elif user_profile[i][1] > 50 and user_profile[i][1] <= 100: 
+            user_profile[i][1] = 1
+        else:
+            user_profile[i][1] = 1.2
 
     recommendations = {}
     for game in user_profile:
@@ -65,11 +65,11 @@ def get_recommendation(user_profile, content_data, tfidf, list_app_name):
     for i in related_docs_indices:
         new_game = list_app_name[i]
         if new_game not in names:
-        if new_game not in recommendations:
-            recommendations.update({new_game: game[1]-lam})
-        else:
-            value = recommendations.get(new_game)
-            recommendations.update({new_game: value+game[1]-lam})
+            if new_game not in recommendations:
+                recommendations.update({new_game: game[1]-lam})
+            else:
+                value = recommendations.get(new_game)
+                recommendations.update({new_game: value+game[1]-lam})
         lam += 0.01
 
     recommendations = dict(sorted(recommendations.items(), key=lambda item: item[1], reverse=True))
@@ -77,10 +77,10 @@ def get_recommendation(user_profile, content_data, tfidf, list_app_name):
     output = []
     count = 0
     for key in recommendations:
-    output.append(key)
-    count += 1
-    if count >= 10:
-        break
+        output.append(key)
+        count += 1
+        if count >= 10:
+            break
 
     return output
 
