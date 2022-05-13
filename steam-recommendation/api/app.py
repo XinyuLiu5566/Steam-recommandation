@@ -22,14 +22,32 @@ def get_current_time():
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
+
+
+
+global tfidf
+global content_data
+global list_app_name
+
+@app.route('/setup')
+def setup():
+    global tfidf
+    global content_data
+    global list_app_name
+    content_data = set_up()
+    tfidf, list_app_name = tf_idf(content_data)
+    return {}
+
+
 @app.route("/get_game",methods=['POST'])
 def get_game():
+    global tfidf
+    global content_data
+    global list_app_name
     # testing
     # user_profile = [["DARK SOULS III", 286], ['Grand Theft Auto V', 45], ['Portal 2', 8], ['RESIDENT EVIL 7 biohazard  BIOHAZARD 7 resident evil', 88], ['Sekiro Shadows Die Twice', 1.4]]
     data = json.loads(request.get_data())
     user_profile = list(map(list, zip(data['games'], data['playTimes'])))
-    content_data = set_up()
-    tfidf, list_app_name = tf_idf(content_data)
     result = get_recommendation(user_profile, content_data, tfidf, list_app_name)
     return jsonify({'recommend' : result})
 

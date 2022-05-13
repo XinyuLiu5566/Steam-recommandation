@@ -20,7 +20,7 @@ function App() {
 
   const handleTime = (e) => {
     const {value} = e.target
-    setTime(value)
+    setTime(parseInt(value))
   }
 
   const handleSubmit = (e) => {
@@ -37,7 +37,6 @@ function App() {
 
   const getRecommendedGames = (e) => {
     e.preventDefault()
-    alert('The table will show after the execution')
     fetch('http://127.0.0.1:5000/get_game', {
     method: 'POST',
     headers: {
@@ -50,7 +49,14 @@ function App() {
       setRecommended(res.recommend),
       setVisible(true),
     )
-}
+  }
+
+  const handleDataSetup = (e) => {
+    e.preventDefault()
+    fetch('http://127.0.0.1:5000/setup')
+    .then(alert('DATA SETUP IN PROGRESS, YOU WILL GET A NOTIFICATION WHEN IT IS DONE'))
+    .then(res => alert('DATA SETUP SUCCESS'))
+  }
 
 
   return (
@@ -69,6 +75,9 @@ function App() {
           SUBMIT
         </Button>
       </Form>
+      <Button className='setup' variant="primary" onClick={handleDataSetup}>
+          SETUP DATA： DO THIS BEFORE INSERTING DATA
+      </Button>
       <br></br>
       <div className='table1'>
         <h4>Favorite games</h4>
@@ -119,6 +128,7 @@ function App() {
         }
       </tbody>
     </Table>
+    <Button variant="primary" onClick={() => window.location.reload(false)}>Try again</Button>
     </div>
     : 
     <Button variant="primary" onClick={getRecommendedGames}>
